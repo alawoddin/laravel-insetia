@@ -9,6 +9,13 @@ use Inertia\Response;
 
 class PostController extends Controller
 {
+
+ public function index(): Response {
+        return Inertia::render('Posts/index', [
+            'posts' => Post::latest()->get()
+        ]);
+    }
+
       public function show(string $id): Response {
         return Inertia::render('Posts/show', [
             'post' => Post::findOrFail($id)

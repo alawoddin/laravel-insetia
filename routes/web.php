@@ -20,4 +20,7 @@ Route::get('/about', function () {
     return Inertia::render('About');
 });
 
+
+Route::get('/posts', [PostController::class, 'index']);
+
 Route::get('/posts/{id}', [PostController::class, 'show']);
