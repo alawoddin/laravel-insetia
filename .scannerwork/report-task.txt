@@ -1,0 +1,6 @@
+projectKey=inventory
+serverUrl=http://localhost:9000
+serverVersion=26.1.0.118079
+dashboardUrl=http://localhost:9000/dashboard?id=inventory
+ceTaskId=1b191395-8a2c-4c29-bcc6-f1e51dbee6c1
+ceTaskUrl=http://localhost:9000/api/ce/task?id=1b191395-8a2c-4c29-bcc6-f1e51dbee6c1

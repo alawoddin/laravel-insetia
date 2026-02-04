@@ -21,4 +21,6 @@ class PostController extends Controller
             'post' => Post::findOrFail($id)
         ]);
     }
+
+
 }
