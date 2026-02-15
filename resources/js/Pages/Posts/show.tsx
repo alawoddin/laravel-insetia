@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/card";
 import AppLayout from "@/Layouts/App-layout";
 import { Post } from "./types";
+import CommentForm from "@/components/commentform";
+import CommentCard from "@/components/commentcard";
 
 interface PostsShowProps {
     post: Post;
@@ -31,6 +33,27 @@ export default function PostsShow({ post }: PostsShowProps) {
                         </p>
                     </CardContent>
                 </Card>
+
+                {/* Comment Form */}
+                <CommentForm postId={post.id} />
+
+                {/* Comments Section */}
+                <div className="space-y-4">
+                    {post.comments && post.comments.length > 0 ? (
+                        <div>
+                            {post.comments.map((comment) => (
+                                <CommentCard
+                                    key={comment.id}
+                                    comment={comment}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-8">
+                            <p className="text-gray-500">No comments yet.</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </AppLayout>
     );
