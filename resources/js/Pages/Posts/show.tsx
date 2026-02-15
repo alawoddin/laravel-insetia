@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/card";
 import AppLayout from "@/Layouts/App-layout";
 import { Post } from "./types";
-import CommentForm from "@/components/commentform";
 import CommentCard from "@/components/commentcard";
+import CommentForm from "@/components/commentform";
 
 interface PostsShowProps {
     post: Post;
