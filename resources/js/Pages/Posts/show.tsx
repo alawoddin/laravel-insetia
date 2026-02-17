@@ -10,6 +10,7 @@ import { Post ,Comment } from "./types";
 import { Deferred } from "@inertiajs/react";
 import CommentCard from "@/components/commentcard";
 import CommentForm from "@/components/commentform";
+import { useRef } from "react";
 
 interface PostsShowProps {
     post: Post;
@@ -17,9 +18,20 @@ interface PostsShowProps {
 }
 
 export default function PostsShow({ post, comments }: PostsShowProps) {
+
+     const commentsSectionRef = useRef<HTMLDivElement>(null);
+
+    const handleCommentAdded = () =>
+        setTimeout(() => {
+            commentsSectionRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100);
+
     return (
         <AppLayout>
-            <div className="space-y-6">
+          <div className="space-y-6">
                 {/* Post Content */}
                 <Card className="rounded-none">
                     <CardHeader>
@@ -37,35 +49,43 @@ export default function PostsShow({ post, comments }: PostsShowProps) {
                 </Card>
 
                 {/* Comment Form */}
-                <CommentForm postId={post.id} />
+                <CommentForm
+                    postId={post.id}
+                    onCommentAdded={handleCommentAdded}
+                />
 
-                <Deferred
-                    data="comments"
-                    fallback={
-                        <div className="text-center py-8">
-                            <p className="text-gray-500">Loading commnets...</p>
-                        </div>
-                    }
-                >
-                    <div className="space-y-4">
-                        {comments && comments.length > 0 ? (
-                            <div>
-                                {comments.map((comment) => (
-                                    <CommentCard
-                                        key={comment.id}
-                                        comment={comment}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
+                {/* Comments Section */}
+                <div ref={commentsSectionRef}>
+                    <Deferred
+                        data="comments"
+                        fallback={
                             <div className="text-center py-8">
                                 <p className="text-gray-500">
-                                    No comments yet.
+                                    Loading commnets...
                                 </p>
                             </div>
-                        )}
-                    </div>
-                </Deferred>
+                        }
+                    >
+                        <div className="space-y-4">
+                            {comments && comments.length > 0 ? (
+                                <div>
+                                    {comments.map((comment) => (
+                                        <CommentCard
+                                            key={comment.id}
+                                            comment={comment}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-8">
+                                    <p className="text-gray-500">
+                                        No comments yet.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </Deferred>
+                </div>
             </div>
         </AppLayout>
     );

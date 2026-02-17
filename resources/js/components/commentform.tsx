@@ -1,3 +1,4 @@
+import { InputError } from "@/components/input-error";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -7,16 +8,18 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-// import { Textarea } from "./textarea";
 import { Form } from "@inertiajs/react";
 import { Input } from "./ui/input";
-import { InputError } from "./input-error";
 
 interface CommentFormProps {
     postId: number;
+    onCommentAdded?: () => void;
 }
 
-export default function CommentForm({ postId }: CommentFormProps) {
+export default function CommentForm({
+    postId,
+    onCommentAdded,
+}: CommentFormProps) {
     return (
         <Card className="rounded-none">
             <CardHeader>
@@ -26,13 +29,14 @@ export default function CommentForm({ postId }: CommentFormProps) {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                   <Form
+                <Form
                     action="/comments"
                     method="post"
                     className="space-y-4"
                     resetOnSuccess
+                    onSuccess={() => onCommentAdded?.()}
                 >
-                    {({ errors , processing  }) => (
+                    {({ errors, processing }) => (
                         <>
                             <Input
                                 type="hidden"
@@ -48,7 +52,7 @@ export default function CommentForm({ postId }: CommentFormProps) {
                                 />
                                 <InputError message={errors.body} />
                             </div>
-                               <Button type="submit" disabled={processing}>
+                            <Button type="submit" disabled={processing}>
                                 {processing
                                     ? "Adding Comment..."
                                     : "Add Comment"}
