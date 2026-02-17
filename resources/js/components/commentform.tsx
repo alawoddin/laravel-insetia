@@ -26,8 +26,13 @@ export default function CommentForm({ postId }: CommentFormProps) {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <Form action="/comments" method="post" className="space-y-4">
-                    {({ errors }) => (
+                   <Form
+                    action="/comments"
+                    method="post"
+                    className="space-y-4"
+                    resetOnSuccess
+                >
+                    {({ errors , processing  }) => (
                         <>
                             <Input
                                 type="hidden"
@@ -43,7 +48,11 @@ export default function CommentForm({ postId }: CommentFormProps) {
                                 />
                                 <InputError message={errors.body} />
                             </div>
-                            <Button>Add Comment</Button>
+                               <Button type="submit" disabled={processing}>
+                                {processing
+                                    ? "Adding Comment..."
+                                    : "Add Comment"}
+                            </Button>
                         </>
                     )}
                 </Form>

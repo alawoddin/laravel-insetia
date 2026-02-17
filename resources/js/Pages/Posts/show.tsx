@@ -6,15 +6,17 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import AppLayout from "@/Layouts/App-layout";
-import { Post } from "./types";
+import { Post ,Comment } from "./types";
+import { Deferred } from "@inertiajs/react";
 import CommentCard from "@/components/commentcard";
 import CommentForm from "@/components/commentform";
 
 interface PostsShowProps {
     post: Post;
+    comments: Comment[];
 }
 
-export default function PostsShow({ post }: PostsShowProps) {
+export default function PostsShow({ post, comments }: PostsShowProps) {
     return (
         <AppLayout>
             <div className="space-y-6">
@@ -37,23 +39,33 @@ export default function PostsShow({ post }: PostsShowProps) {
                 {/* Comment Form */}
                 <CommentForm postId={post.id} />
 
-                {/* Comments Section */}
-                <div className="space-y-4">
-                    {post.comments && post.comments.length > 0 ? (
-                        <div>
-                            {post.comments.map((comment) => (
-                                <CommentCard
-                                    key={comment.id}
-                                    comment={comment}
-                                />
-                            ))}
-                        </div>
-                    ) : (
+                <Deferred
+                    data="comments"
+                    fallback={
                         <div className="text-center py-8">
-                            <p className="text-gray-500">No comments yet.</p>
+                            <p className="text-gray-500">Loading commnets...</p>
                         </div>
-                    )}
-                </div>
+                    }
+                >
+                    <div className="space-y-4">
+                        {comments && comments.length > 0 ? (
+                            <div>
+                                {comments.map((comment) => (
+                                    <CommentCard
+                                        key={comment.id}
+                                        comment={comment}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8">
+                                <p className="text-gray-500">
+                                    No comments yet.
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                </Deferred>
             </div>
         </AppLayout>
     );
